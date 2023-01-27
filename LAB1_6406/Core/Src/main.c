@@ -315,10 +315,55 @@ void padtonum()
 
 	switch(ButtonMatrix)
 	{
-	case 1:
+	case 0b1:
+		test = 7;
+		break;
+	case 0b10:
+		test = 4;
+		break;
+	case 0b100:
+		test = 1;
+		break;
+	case 0b1000:
+		test = 0;
+		break;
+	case 0b10000:
+		test = 8;
+		break;
+	case 0b100000:
+		test = 5;
+		break;
+	case 0b1000000:
+		test = 2;
+		break;
+	case 0b100000000:
 		test = 9;
 		break;
+	case 0b1000000000:
+		test = 6;
+		break;
+	case 0b10000000000:
+		test = 3;
+		break;
+	case 0b1000000000000:
+		test = 99;
+		break;
+	case 0b10000000000000:
+		test = 90;
+		break;
+	case 0b1000000000000000:
+		test = 80;
+		break;
 	}
+}
+
+void lightLED(char numID)
+{
+	if (numID == '5')
+	{
+		test = 0;
+	}
+
 }
 /* USER CODE END 4 */
 
