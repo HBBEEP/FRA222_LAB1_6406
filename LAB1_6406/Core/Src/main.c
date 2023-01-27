@@ -63,6 +63,10 @@ struct PortPin L[4] =
 };
 
 uint16_t ButtonMatrix = 0;
+uint16_t test = 0;
+char studentID[] = {'0', '0', '0', '0', '0', '0',
+                    '0', '0', '0', '0', '0', '\0'};
+char memoryID[] = {'0', '0', '0', '0', '\0'};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -70,6 +74,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 void ReadMatrixButton1Row();
+void padtonum();
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -124,6 +129,7 @@ int main(void)
 	  {
 		  timestamp = HAL_GetTick() + 5;
 		  ReadMatrixButton1Row();
+		  padtonum();
 	  }
   }
   /* USER CODE END 3 */
@@ -304,7 +310,16 @@ void ReadMatrixButton1Row()
 	X%=4;
 }
 
+void padtonum()
+{
 
+	switch(ButtonMatrix)
+	{
+	case 1:
+		test = 9;
+		break;
+	}
+}
 /* USER CODE END 4 */
 
 /**
