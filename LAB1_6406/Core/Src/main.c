@@ -75,6 +75,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 void ReadMatrixButton1Row();
 void padtonum();
+void lightLED(char numID);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -312,7 +313,7 @@ void ReadMatrixButton1Row()
 
 void padtonum()
 {
-
+	char abc = '0';
 	switch(ButtonMatrix)
 	{
 	case 0b1:
@@ -331,7 +332,9 @@ void padtonum()
 		test = 8;
 		break;
 	case 0b100000:
+		abc = '5';
 		test = 5;
+		lightLED(abc);
 		break;
 	case 0b1000000:
 		test = 2;
