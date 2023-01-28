@@ -62,9 +62,6 @@ struct PortPin L[4] =
 	{GPIOA,GPIO_PIN_7}
 };
 
-// incompatible types when assigning to type 'struct _GPIOState' from type 'GPIO_PinState
-
-// create struct type
 struct _GPIOState
 {
 	GPIO_PinState Current;
@@ -74,11 +71,9 @@ struct _GPIOState
 // declare variable
 struct _GPIOState Button1[4];
 
-// char studentID[] = {'0', '0', '0', '0', '0', '0',
-                   //  '0', '0', '0', '0', '0', '\0'};
-char myID[] = "64340500006";
 uint16_t ButtonMatrix = 0;
 uint16_t test = 0;
+char myID[] = "64340500006";
 char studentID[] = "00000000000";
 /* USER CODE END PV */
 
@@ -86,17 +81,17 @@ char studentID[] = "00000000000";
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
-void ReadMatrixButton1Row();
-void padtonum();
-void lightLED();
-void handleStudentID(char numID);
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void ReadMatrixButton1Row();
+void padtonum();
+void handleStudentID(char numID);
+void clearStudentID();
 /* USER CODE END 0 */
 
 /**
@@ -316,14 +311,11 @@ void ReadMatrixButton1Row()
 		else
 		{
 			ButtonMatrix |= 1<<(X*4+i);
-			// incompatible types when assigning to type 'struct _GPIOState' from type 'GPIO_PinState
-			test = 2;
-
 
 			// detect button press by using falling edge detector
 			if (Button1[i].Last == 1 && Button1[i].Current == 0)
 			{
-				// toggle led
+				// call function
 				padtonum();
 			}
 
@@ -347,54 +339,67 @@ void padtonum()
 	{
 	case 0b1:
 		test = 7;
+		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('7');
 		break;
 	case 0b10:
 		test = 4;
+		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('4');
 		break;
 	case 0b100:
 		test = 1;
+		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('1');
 		break;
 	case 0b1000:
 		test = 0;
+		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('0');
 		break;
 	case 0b10000:
 		test = 8;
+		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('8');
 		break;
 	case 0b100000:
 		test = 5;
+		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('5');
 		break;
 	case 0b1000000:
 		test = 2;
+		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('2');
 		break;
 	case 0b100000000:
 		test = 9;
+		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('9');
 		break;
 	case 0b1000000000:
 		test = 6;
+		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('6');
 		break;
 	case 0b10000000000:
 		test = 3;
+		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('3');
 		break;
 	case 0b1000000000000:
-		test = 99;
+		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+		clearStudentID();
 		break;
 	case 0b10000000000000:
+		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		test = 90;
 		break;
 	case 0b1000000000000000:
 		if (strcmp(studentID, myID) == 0)
 		{
-			test = 16;
+			HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
+			test = 99;
 		}
 		else
 		{
@@ -404,10 +409,6 @@ void padtonum()
 	}
 }
 
-void lightLED()
-{
-
-}
 
 void handleStudentID(char numID)
 {
@@ -425,6 +426,16 @@ void handleStudentID(char numID)
 	}
 
 
+}
+
+void clearStudentID()
+{
+	register int k;
+	for (k = 0; k < 11; k++)
+	{
+		studentID[k] = '0';
+
+	}
 }
 /* USER CODE END 4 */
 
