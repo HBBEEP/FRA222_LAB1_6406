@@ -338,52 +338,42 @@ void padtonum()
 	switch(ButtonMatrix)
 	{
 	case 0b1:
-		test = 7;
 		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('7');
 		break;
 	case 0b10:
-		test = 4;
 		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('4');
 		break;
 	case 0b100:
-		test = 1;
 		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('1');
 		break;
 	case 0b1000:
-		test = 0;
 		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('0');
 		break;
 	case 0b10000:
-		test = 8;
 		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('8');
 		break;
 	case 0b100000:
-		test = 5;
 		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('5');
 		break;
 	case 0b1000000:
-		test = 2;
 		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('2');
 		break;
 	case 0b100000000:
-		test = 9;
 		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('9');
 		break;
 	case 0b1000000000:
-		test = 6;
 		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('6');
 		break;
 	case 0b10000000000:
-		test = 3;
 		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 		handleStudentID('3');
 		break;
@@ -399,11 +389,6 @@ void padtonum()
 		if (strcmp(studentID, myID) == 0)
 		{
 			HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
-			test = 99;
-		}
-		else
-		{
-			test = 0;
 		}
 		break;
 	}
