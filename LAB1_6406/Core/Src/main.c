@@ -72,7 +72,6 @@ struct _GPIOState
 struct _GPIOState Button1[4];
 
 uint16_t ButtonMatrix = 0;
-uint16_t test = 0;
 char myID[] = "64340500006";
 char studentID[] = "00000000000";
 /* USER CODE END PV */
@@ -89,9 +88,10 @@ static void MX_USART2_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void ReadMatrixButton1Row();
-void padtonum();
+void getNumpadInput();
 void handleStudentID(char numID);
 void clearStudentID();
+void handleBackspace();
 /* USER CODE END 0 */
 
 /**
@@ -316,7 +316,7 @@ void ReadMatrixButton1Row()
 			if (Button1[i].Last == 1 && Button1[i].Current == 0)
 			{
 				// call function
-				padtonum();
+				getNumpadInput();
 			}
 
 			// save GPIO Logic for next loop
@@ -333,7 +333,7 @@ void ReadMatrixButton1Row()
 	X%=4;
 }
 
-void padtonum()
+void getNumpadInput()
 {
 	switch(ButtonMatrix)
 	{
@@ -383,7 +383,7 @@ void padtonum()
 		break;
 	case 0b10000000000000:
 		HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
-		test = 90;
+		handleBackspace();
 		break;
 	case 0b1000000000000000:
 		if (strcmp(studentID, myID) == 0)
@@ -421,6 +421,23 @@ void clearStudentID()
 		studentID[k] = '0';
 
 	}
+}
+
+void handleBackspace()
+{
+	register int j;
+	for (j = 0; j < 11; j++)
+	{
+		if (j == 10)
+		{
+			studentID[0] = '0';
+		}
+		else
+		{
+			studentID[11-j-1] = studentID[11-j-2];
+		}
+	}
+
 }
 /* USER CODE END 4 */
 
