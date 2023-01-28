@@ -18,7 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
+#include <string.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -64,9 +64,11 @@ struct PortPin L[4] =
 
 uint16_t ButtonMatrix = 0;
 uint16_t test = 0;
-char studentID[] = {'0', '0', '0', '0', '0', '0',
-                    '0', '0', '0', '0', '0', '\0'};
-char memoryID[] = {'0', '0', '0', '0', '\0'};
+// char studentID[] = {'0', '0', '0', '0', '0', '0',
+                   //  '0', '0', '0', '0', '0', '\0'};
+// char myID[] = "64340500006";
+char studentID[] = "00000000000";
+char myID[] = "00000000006";
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -75,7 +77,8 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 void ReadMatrixButton1Row();
 void padtonum();
-void lightLED(char numID);
+void lightLED();
+void handleStudentID(char numID);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -128,7 +131,7 @@ int main(void)
 	  static uint32_t timestamp = 0;
 	  if(HAL_GetTick() >= timestamp)
 	  {
-		  timestamp = HAL_GetTick() + 5;
+		  timestamp = HAL_GetTick() + 100;
 		  ReadMatrixButton1Row();
 		  padtonum();
 	  }
@@ -313,40 +316,47 @@ void ReadMatrixButton1Row()
 
 void padtonum()
 {
-	char abc = '0';
 	switch(ButtonMatrix)
 	{
 	case 0b1:
 		test = 7;
+		handleStudentID('7');
 		break;
 	case 0b10:
 		test = 4;
+		handleStudentID('4');
 		break;
 	case 0b100:
 		test = 1;
+		handleStudentID('1');
 		break;
 	case 0b1000:
 		test = 0;
+		handleStudentID('0');
 		break;
 	case 0b10000:
 		test = 8;
+		handleStudentID('8');
 		break;
 	case 0b100000:
-		abc = '5';
 		test = 5;
-		lightLED(abc);
+		handleStudentID('5');
 		break;
 	case 0b1000000:
 		test = 2;
+		handleStudentID('2');
 		break;
 	case 0b100000000:
 		test = 9;
+		handleStudentID('9');
 		break;
 	case 0b1000000000:
 		test = 6;
+		handleStudentID('6');
 		break;
 	case 0b10000000000:
 		test = 3;
+		handleStudentID('3');
 		break;
 	case 0b1000000000000:
 		test = 99;
@@ -355,17 +365,38 @@ void padtonum()
 		test = 90;
 		break;
 	case 0b1000000000000000:
-		test = 80;
+		if (strcmp(studentID, myID) == 0)
+		{
+			test = 16;
+		}
+		else
+		{
+			test = 0;
+		}
 		break;
 	}
 }
 
-void lightLED(char numID)
+void lightLED()
 {
-	if (numID == '5')
+
+}
+
+void handleStudentID(char numID)
+{
+	register int j;
+	for (j = 0; j < 11; j++)
 	{
-		test = 0;
+		if (j == 10)
+		{
+			studentID[10] = numID;
+		}
+		else
+		{
+			studentID[j] = studentID[j + 1];
+		}
 	}
+
 
 }
 /* USER CODE END 4 */
