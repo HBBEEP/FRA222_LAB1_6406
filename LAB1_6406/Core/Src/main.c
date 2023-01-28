@@ -62,13 +62,24 @@ struct PortPin L[4] =
 	{GPIOA,GPIO_PIN_7}
 };
 
-uint16_t ButtonMatrix = 0;
-uint16_t test = 0;
+// incompatible types when assigning to type 'struct _GPIOState' from type 'GPIO_PinState
+
+// create struct type
+struct _GPIOState
+{
+	GPIO_PinState Current;
+	GPIO_PinState Last;
+};
+
+// declare variable
+struct _GPIOState Button1[4];
+
 // char studentID[] = {'0', '0', '0', '0', '0', '0',
                    //  '0', '0', '0', '0', '0', '\0'};
-// char myID[] = "64340500006";
+char myID[] = "64340500006";
+uint16_t ButtonMatrix = 0;
+uint16_t test = 0;
 char studentID[] = "00000000000";
-char myID[] = "00000000006";
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -131,9 +142,9 @@ int main(void)
 	  static uint32_t timestamp = 0;
 	  if(HAL_GetTick() >= timestamp)
 	  {
-		  timestamp = HAL_GetTick() + 100;
+		  timestamp = HAL_GetTick() + 50;
 		  ReadMatrixButton1Row();
-		  padtonum();
+
 	  }
   }
   /* USER CODE END 3 */
@@ -296,6 +307,7 @@ void ReadMatrixButton1Row()
 	register int i;
 	for (i = 0; i < 4; i++)
 	{
+		Button1[i].Current = HAL_GPIO_ReadPin(L[i].PORT, L[i].PIN);
 		if(HAL_GPIO_ReadPin(L[i].PORT, L[i].PIN) == 1)
 		{
 			ButtonMatrix &= ~(1<<(X*4 + i));
@@ -304,7 +316,22 @@ void ReadMatrixButton1Row()
 		else
 		{
 			ButtonMatrix |= 1<<(X*4+i);
+			// incompatible types when assigning to type 'struct _GPIOState' from type 'GPIO_PinState
+			test = 2;
+
+
+			// detect button press by using falling edge detector
+			if (Button1[i].Last == 1 && Button1[i].Current == 0)
+			{
+				// toggle led
+				padtonum();
+			}
+
+			// save GPIO Logic for next loop
+
+
 		}
+		Button1[i].Last = Button1[i].Current;
 	}
 	// SET RX
 	HAL_GPIO_WritePin(R[X].PORT, R[X].PIN, 1);
